@@ -1,0 +1,43 @@
+import { AdminGuard } from 'src/user/user/Guards/Admin.guard';
+import { Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { UserDto } from './dtos/user.dto';
+import { UserService } from './user.service';
+
+@Controller('/api/users/')
+export class UserController {
+constructor(private _user:UserService)
+{
+
+}
+@Post('auth/register/')
+register(@Body() body:UserDto)
+{
+   console.log(body);
+   return  this._user.register(body);
+
+}
+
+@Post('auth/login/')
+login(@Body() body:UserDto)
+{
+   console.log(body);
+      return  this._user.logIn(body);
+}
+
+@Get('allUsers')
+@UseGuards(AdminGuard)
+getAll()
+{
+   return this._user.getAllUsers_ToAdmin();
+}
+
+
+@Get('userDetails/:id')
+@UseGuards(AdminGuard)
+getUserDetails(@Param('id',ParseIntPipe) id:number)
+{
+   return this._user.getUserDetailsToAdmin(id);
+}
+}
