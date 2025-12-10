@@ -160,17 +160,19 @@ throw new UnauthorizedException('Access denied You are not allowed to update');
 
 public async checkIfUserAllowedToAccessTheTaskOrAdmin(taskId:number,user:UserType,neededTo:string)
 {
-const task=await this._Repo.findOne({where:{id:taskId}});
+const task=await this._Repo.findOne({where:{id:taskId},relations:['assignedTo'],select:['assignedTo']});
+console.log(task);
+
 if(!task)
 throw new BadRequestException('task is not found ');
-if(user.id===taskId||user.role===UserRole.ADMIN)
+if(user.id===task.assignedTo.id||user.role===UserRole.ADMIN)
 {
 if(neededTo=='check')
 return true;
 else
 return await this._Repo.findOne({where:{id:taskId},relations:['assignedTo','createdby','assignedComments']});
-
 }
+throw new UnauthorizedException('Access denied you r not allowed to add a comment ')
 }
 
 

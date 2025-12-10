@@ -1,5 +1,5 @@
 import { AdminGuard } from 'src/user/user/Guards/Admin.guard';
-import { Param, ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Delete, Param, ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
@@ -41,5 +41,11 @@ getAll()
 getUserDetails(@Param('id',ParseIntPipe) id:number)
 {
    return this._user.getUserDetailsToAdmin(id);
+}
+@Delete('deleteAll')
+@UseGuards(AdminGuard)
+deleteAll()
+{
+   return this._user.deleteAllUsers();
 }
 }

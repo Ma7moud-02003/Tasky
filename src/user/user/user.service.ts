@@ -12,6 +12,7 @@ import { UserDto } from './dtos/user.dto';
 import bcrypt  from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
 import { UserType } from 'src/ulites/userType';
+import { UserRole } from './enums/userRole';
 @Injectable()
 export class UserService {
 constructor(
@@ -24,7 +25,7 @@ constructor(
 
 async register(dto:UserDto)
 {
-const {name,email,password}=dto;
+const {name,email,password,role}=dto;
 const userIfExist=await this._userRepo.findOne({where:{email}});
 console.log(userIfExist);
 
@@ -32,7 +33,7 @@ if(userIfExist)
 throw new BadRequestException('Email Is already Exist');
 const hashedPass=await bcrypt.hash(password,10);
 let user=this._userRepo.create({
-    name,email,password:hashedPass
+    name,email,password:hashedPass,role
 })
 user=await this._userRepo.save(user);
 const token=await this.generateToken({id:user.id,role:user.role});
@@ -47,7 +48,7 @@ return {
 async logIn(dto:UserDto)
 {
     const {email,password}=dto;
-    console.log(email);
+    console.log(email,password);
     
 const userIfExist=await this._userRepo.findOne({where:{email}});
 console.log(userIfExist);
@@ -92,6 +93,18 @@ throw new  BadRequestException(err)
 getUserDetailsToAdmin(id:number)
 {
 return this._userRepo.findOne({where:{id},relations:['assigendTasks'],order:{createdAt:'ASC'}});
+}
+
+async deleteAllUsers()
+{
+    try{
+     await  this._userRepo.delete({role:UserRole.NORMAL_USER});
+    return {
+        message:'All useres has benn deleted'
+    }
+    }catch(err){console.log(err);
+        throw new BadRequestException();
+    }
 }
 
  private async  generateToken(userType: UserType)

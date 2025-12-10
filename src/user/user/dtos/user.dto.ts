@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable prettier/prettier */
-import {IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength} from 'class-validator'
+import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length, MaxLength} from 'class-validator'
+import { UserRole } from '../enums/userRole';
 export class UserDto
 {
     @IsString()
@@ -11,8 +12,9 @@ export class UserDto
    @IsNotEmpty()
    @MaxLength(100)
    email:string;
-   @IsOptional()
-   role:string
+  @IsOptional()
+  @IsEnum(UserRole)
+  role: UserRole = UserRole.NORMAL_USER;
    @IsEmail()
    @IsString()
    @IsNotEmpty()
