@@ -11,6 +11,8 @@ export class UserDto
    @IsNotEmpty()
    @MaxLength(100)
    email:string;
+   @IsOptional()
+   role:string
    @IsEmail()
    @IsString()
    @IsNotEmpty()
