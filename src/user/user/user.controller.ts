@@ -5,6 +5,9 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
 import { UserService } from './user.service';
 import { LoggerInterceptor } from 'src/ulites/Interceptors/logger.interceptor';
+import { AuthGuard } from './Guards/auth.guard';
+import { current_user } from 'src/Tasks/Decorators/getUser.decorator';
+import type { UserType } from 'src/ulites/userType';
 
 @Controller('/api/users/')
 export class UserController {
@@ -41,6 +44,15 @@ getAll()
 getUserDetails(@Param('id',ParseIntPipe) id:number)
 {
    return this._user.getUserDetailsToAdmin(id);
+}
+
+
+@Get('myData')
+@UseGuards(AuthGuard)
+@UseInterceptors(LoggerInterceptor)
+getMyData(@current_user() user:UserType)
+{
+   return this._user.getUserForUser(user.id);
 }
 @Delete('deleteAll')
 @UseGuards(AdminGuard)

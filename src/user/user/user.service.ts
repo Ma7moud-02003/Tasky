@@ -106,6 +106,15 @@ async deleteAllUsers()
         throw new BadRequestException();
     }
 }
+/**
+ * 
+ * @param id user id from token
+ * @returns user data
+ */
+async getUserForUser(id:number)
+{
+return await this._userRepo.findOne({where:{id}})
+}
 
  private async  generateToken(userType: UserType)
 {
