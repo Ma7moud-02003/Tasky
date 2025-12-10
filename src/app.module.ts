@@ -29,7 +29,7 @@ import { Comments } from './Comments/comment.entity';
      port:config.get<number>('PORT'),
      host:config.get<string>('HOST'),
      username:'postgres',
-     synchronize: (process.env.DB_ENV || 'development') !== 'production',
+     synchronize: false,
      entities: [User,Task,Comments],
   };
     }
