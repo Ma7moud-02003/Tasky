@@ -60,7 +60,8 @@ throw new BadRequestException('Password is not true');
 const token=await this.generateToken({id:userIfExist.id,role:userIfExist.role});
 return {
     message:'Logged in successfully',
-    token
+    token,
+    userIfExist
 }
 }
 
