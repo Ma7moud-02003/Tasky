@@ -1,9 +1,10 @@
 import { AdminGuard } from 'src/user/user/Guards/Admin.guard';
-import { Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Param, ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
 import { UserService } from './user.service';
+import { LoggerInterceptor } from 'src/ulites/Interceptors/logger.interceptor';
 
 @Controller('/api/users/')
 export class UserController {
@@ -36,6 +37,7 @@ getAll()
 
 @Get('userDetails/:id')
 @UseGuards(AdminGuard)
+@UseInterceptors(LoggerInterceptor)
 getUserDetails(@Param('id',ParseIntPipe) id:number)
 {
    return this._user.getUserDetailsToAdmin(id);

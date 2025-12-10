@@ -5,7 +5,7 @@ import { UserRole } from "./user/enums/userRole";
 import { current_stamp } from "src/ulites/constants";
 import { Task } from "src/Tasks/Task.entity";
 import { Comments } from "src/Comments/comment.entity";
-
+import {Exclude} from 'class-transformer'
 @Entity({name:'users'})
 export class User
 {
@@ -16,6 +16,7 @@ email:string;
 @Column({type:'varchar',length:'100'})
 name:string;
 @Column({type:'varchar',length:'100'})
+@Exclude()
 password:string;
 @Column({type:'enum',enum:UserRole,default:UserRole.NORMAL_USER})
 role:string;
