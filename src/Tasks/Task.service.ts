@@ -39,7 +39,7 @@ async creatTask(dto:TaskDto,adminId:number)
 {
 let addedTask= this._Repo.create({
     title:dto.title,
-    discreption:dto.discreption,
+    description:dto.description,
     status:dto.status,
     priority:dto.priority,
     dueDate:dto.dueDate,
