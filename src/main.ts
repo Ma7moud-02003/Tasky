@@ -7,7 +7,6 @@ import { writeFileSync } from 'fs';
 import { join } from 'path';
 async function bootstrap() {
 const app = await NestFactory.create(AppModule);
-await app.listen(process.env.PORT||3000);
 app.useGlobalPipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true}));
  
     const config = new DocumentBuilder()
@@ -19,7 +18,13 @@ app.useGlobalPipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true}
 
     const document = SwaggerModule.createDocument(app, config);
   writeFileSync(join(__dirname, 'swagger.json'), JSON.stringify(document));
+  SwaggerModule.setup('api', app, document);
+
+await app.listen(process.env.PORT||3000);
+
   }
+
+
 
 
 bootstrap();
