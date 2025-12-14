@@ -1,16 +1,15 @@
-/* eslint-disable prettier/prettier */
+import { IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-import { IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+export class CommentDto {
+  @ApiProperty({ description: 'The comment content', minLength: 3, maxLength: 1000 })
+  @IsString()
+  @IsNotEmpty()
+  @Length(3, 1000)
+  comment: string;
 
-export class CommentDto
-{
-   @IsString()
-   @IsNotEmpty()
-   @Length(3,1000)
-   comment:string;
-   @IsNumber()
-   @IsNotEmpty()
-   assignedTo:number;
-
-
+  @ApiProperty({ description: 'ID of the user assigned to this comment' })
+  @IsNumber()
+  @IsNotEmpty()
+  assignedTo: number;
 }

@@ -3,5 +3,5 @@ export enum TaskPeriority
 {
 LOW='low',
 MED='med',
-HEIGH='hiigh'
+HEIGH='heigh'
 }

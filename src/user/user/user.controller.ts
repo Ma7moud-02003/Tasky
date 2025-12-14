@@ -8,56 +8,58 @@ import { LoggerInterceptor } from 'src/ulites/Interceptors/logger.interceptor';
 import { AuthGuard } from './Guards/auth.guard';
 import { current_user } from 'src/Tasks/Decorators/getUser.decorator';
 import type { UserType } from 'src/ulites/userType';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('/api/users/')
+@ApiTags('users')
+@Controller('/api/users')
 export class UserController {
-constructor(private _user:UserService)
-{
+  constructor(private readonly _user: UserService) {}
 
-}
-@Post('auth/register/')
-register(@Body() body:UserDto)
-{
-   console.log(body);
-   return  this._user.register(body);
+  @Post('auth/register')
+  @ApiOperation({ summary: 'Register a new user' })
+  register(@Body() body: UserDto) {
+    console.log(body);
+    return this._user.register(body);
+  }
 
-}
+  @Post('auth/login')
+  @ApiOperation({ summary: 'User login' })
+  login(@Body() body: UserDto) {
+    console.log(body);
+    return this._user.logIn(body);
+  }
 
-@Post('auth/login/')
-login(@Body() body:UserDto)
-{
-   console.log(body);
-      return  this._user.logIn(body);
-}
+  @Get('allUsers')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth() 
+  @ApiOperation({ summary: 'Get all users (Admin only)' })
+  getAll() {
+    return this._user.getAllUsers_ToAdmin();
+  }
 
-@Get('allUsers')
-@UseGuards(AdminGuard)
-getAll()
-{
-   return this._user.getAllUsers_ToAdmin();
-}
+  @Get('userDetails/:id')
+  @UseGuards(AdminGuard)
+  @UseInterceptors(LoggerInterceptor)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get user details by ID (Admin only)' })
+  getUserDetails(@Param('id', ParseIntPipe) id: number) {
+    return this._user.getUserDetailsToAdmin(id);
+  }
 
+  @Get('myData')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(LoggerInterceptor)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current user data' })
+  getMyData(@current_user() user: UserType) {
+    return this._user.getUserForUser(user.id);
+  }
 
-@Get('userDetails/:id')
-@UseGuards(AdminGuard)
-@UseInterceptors(LoggerInterceptor)
-getUserDetails(@Param('id',ParseIntPipe) id:number)
-{
-   return this._user.getUserDetailsToAdmin(id);
-}
-
-
-@Get('myData')
-@UseGuards(AuthGuard)
-@UseInterceptors(LoggerInterceptor)
-getMyData(@current_user() user:UserType)
-{
-   return this._user.getUserForUser(user.id);
-}
-@Delete('deleteAll')
-@UseGuards(AdminGuard)
-deleteAll()
-{
-   return this._user.deleteAllUsers();
-}
+  @Delete('deleteAll')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete all users (Admin only)' })
+  deleteAll() {
+    return this._user.deleteAllUsers();
+  }
 }

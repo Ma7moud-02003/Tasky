@@ -4,6 +4,6 @@ export enum TaskStatusEnum
 {
     PENDING='pending',
     IN_PROGRESS='IN_PROGRESS',
-    ACTIVE='ActiveXObject',
+    ACTIVE='active',
     Done='Done'
 }

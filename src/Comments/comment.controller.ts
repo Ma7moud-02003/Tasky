@@ -5,30 +5,21 @@ import { CommentsService } from "./comment.service";
 import { CommentDto } from "./dtos/comment.dto";
 import { current_user } from "src/Tasks/Decorators/getUser.decorator";
 import type { UserType } from "src/ulites/userType";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 
-@Controller('/api/comments/')
-export class CommentController
-{
-constructor(private _comentService:CommentsService)
-{}
-    @Post('addOne')
-    @UseGuards(AuthGuard)
-    addComment(@Body() body:CommentDto,@current_user() user:UserType)
-    {
-        console.log(body);
-        console.log(user);
-       return this._comentService.addComment(body,user);
-    }
+@ApiTags('comments')
+@Controller('/api/comments')
+export class CommentController {
+  constructor(private readonly _commentService: CommentsService) {}
 
-    
-    // @Get(':id')
-    // @UseGuards(AuthGuard)
-    // getComments(@Param('id',ParseIntPipe) id:number,@current_user() user:UserType)
-    // {
-    //    return this._comentService.getTaskComments(id,user);
-    // }
-
-
-
+  @Post('addOne')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Add a new comment to a task (Authenticated users only)' })
+  addComment(@Body() body: CommentDto, @current_user() user: UserType) {
+    console.log(body);
+    console.log(user);
+    return this._commentService.addComment(body, user);
+  }
 }
