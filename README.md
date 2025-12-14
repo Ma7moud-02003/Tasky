@@ -20,7 +20,7 @@ NestJS · PostgreSQL · TypeORM · JWT · Railway
 https://tasky-production-f6e0.up.railway.app/ap
 
 ## 📄 API Docs
-Swagger:
+Swagger: https://tasky-production-f6e0.up.railway.app/api
 
 ## 👨‍💻 Author
 Mahmoud Amr — Backend Developer
