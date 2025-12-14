@@ -13,7 +13,7 @@ id:number;
 @Column()
 title:string;
 @Column()
-discreption:string;
+description:string;
 @Column({type:'enum',enum:TaskStatusEnum,default:TaskStatusEnum.PENDING})
 status:TaskStatusEnum; 
 @Column()

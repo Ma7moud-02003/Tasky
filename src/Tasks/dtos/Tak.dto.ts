@@ -15,7 +15,7 @@ export class TaskDto {
   @IsString()
   @IsNotEmpty()
   @Length(10, 10000)
-  description: string; // تم تصحيح الاسم
+  description: string;
 
   @ApiPropertyOptional({ description: 'Task status', enum: TaskStatusEnum })
   @IsOptional()
