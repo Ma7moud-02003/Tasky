@@ -17,7 +17,7 @@ The system supports authentication, role-based authorization, and structured tas
 NestJS · PostgreSQL · TypeORM · JWT · Railway
 
 ## 🌐 Live API
-https://tasky-production-f6e0.up.railway.app
+https://tasky-production-f6e0.up.railway.app/ap
 
 ## 📄 API Docs
 Swagger:
