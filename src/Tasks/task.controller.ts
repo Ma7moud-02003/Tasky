@@ -18,7 +18,6 @@ import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger"
 @Controller('/api/tasks')
 export class TaskController {
   constructor(private readonly _taskService: TaskService) {}
-
   @Post('addTask')
   @UseGuards(AdminGuard)
   @ApiBearerAuth()
