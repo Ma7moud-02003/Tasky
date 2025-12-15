@@ -21,7 +21,6 @@ export class UserDto {
   role: UserRole = UserRole.NORMAL_USER;
 
   @ApiProperty({ description: 'User password', minLength: 5, maxLength: 100 })
-  @IsEmail()
   @IsString()
   @IsNotEmpty()
   @Length(5, 100)
