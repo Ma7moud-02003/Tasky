@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable prettier/prettier */
+
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserRole } from "./user/enums/userRole";
 import { current_stamp } from "src/ulites/constants";
@@ -21,7 +20,8 @@ name:string;
 password:string;
 @Column({type:'enum',enum:UserRole,default:UserRole.NORMAL_USER})
 role:string;
-
+@CreateDateColumn({type:'timestamp',default:()=>current_stamp,nullable:true})
+lastSeen:Date;
 @OneToMany(()=>Task,(task)=>task.assignedTo)
 assigendTasks:Task;
 @OneToMany(()=>Task,(task)=>task.createdby)
