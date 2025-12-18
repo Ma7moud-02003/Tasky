@@ -22,7 +22,7 @@ password:string;
 @Column({type:'enum',enum:UserRole,default:UserRole.NORMAL_USER})
 role:string;
 
-@Column({type:'timestamp'})
+@Column({type:'timestamp',default:()=>current_stamp,nullable:true})
 lastSeen:Date;
 
 @OneToMany(()=>Task,(task)=>task.assignedTo)

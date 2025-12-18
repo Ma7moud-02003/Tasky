@@ -22,8 +22,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
      TypeOrmModule.forRootAsync({
      inject:[ConfigService],
     useFactory:(config:ConfigService)=>{       
-    console.log(process.env.DB_ENV);
-    
+   
      return {
     type: 'postgres',
      database:config.get<string>('DATABASE'),
