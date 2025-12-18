@@ -32,6 +32,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
      username:'postgres',
      synchronize: process.env.DB_ENV!='production',
      entities: [User,Task,Comments],
+   migrations: ['dist/migrations/*.js'],
   };
     }
       }),
