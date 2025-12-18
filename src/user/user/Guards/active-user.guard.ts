@@ -1,4 +1,4 @@
-import { BadRequestException, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { Request } from 'express';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -8,6 +8,7 @@ import { isActive } from "../utils/is-Active";
 import { UserType } from "src/ulites/userType";
 import { UserDto } from "../dtos/user.dto";
 
+@Injectable()
 export class ActiveUserGuard implements CanActivate
 {
     constructor(
