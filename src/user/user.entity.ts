@@ -6,8 +6,8 @@ import { current_stamp } from "src/ulites/constants";
 import { Task } from "src/Tasks/Task.entity";
 import { Comments } from "src/Comments/comment.entity";
 import {Exclude} from 'class-transformer'
-import { TaskStatusEnum } from "src/Tasks/enums/task.status.enum";
-@Entity({name:'users'})
+
+@Entity({name:'Users'})
 export class User
 {
 @PrimaryGeneratedColumn()
