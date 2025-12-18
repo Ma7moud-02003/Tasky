@@ -14,7 +14,7 @@ import { User } from "src/user/user.entity";
         imports:[
             UserModule
             ,
-            TypeOrmModule.forFeature([Task,User]),
+            TypeOrmModule.forFeature([Task]),
               JwtModule.registerAsync({
                     inject:[ConfigService],
                     useFactory:(config:ConfigService)=>{

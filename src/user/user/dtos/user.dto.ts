@@ -16,8 +16,6 @@ export class UserDto {
   @MaxLength(100)
   email: string;
   
-  @IsOptional()
-  isActive:boolean;
 
 
   @ApiPropertyOptional({ description: 'User role', enum: UserRole, default: UserRole.NORMAL_USER })
