@@ -1,6 +1,12 @@
 import { AdminGuard } from 'src/user/user/Guards/Admin.guard';
-import { Delete, Param, ParseIntPipe, UseGuards, UseInterceptors } from '@nestjs/common';
-/* eslint-disable prettier/prettier */
+import {
+  Delete,
+  Param,
+  ParseIntPipe,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
 import { UserService } from './user.service';
@@ -9,6 +15,7 @@ import { AuthGuard } from './Guards/auth.guard';
 import { current_user } from 'src/Tasks/Decorators/getUser.decorator';
 import type { UserType } from 'src/ulites/userType';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ActiveUserGuard } from './Guards/active-user.guard';
 
 @ApiTags('users')
 @Controller('/api/users')
@@ -18,48 +25,58 @@ export class UserController {
   @Post('auth/register')
   @ApiOperation({ summary: 'Register a new user' })
   register(@Body() body: UserDto) {
-    console.log(body);
     return this._user.register(body);
   }
 
   @Post('auth/login')
   @ApiOperation({ summary: 'User login' })
   login(@Body() body: UserDto) {
-    console.log(body);
     return this._user.logIn(body);
   }
 
   @Get('allUsers')
-  @UseGuards(AdminGuard)
-  @ApiBearerAuth() 
+  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users (Admin only)' })
-  getAll() {
-    return this._user.getAllUsers_ToAdmin();
+  getAll(@Req() req) {
+    return {
+      users: this._user.getAllUsers_ToAdmin(),
+      isActive: req.isActive, // حالة Admin
+    };
   }
 
   @Get('userDetails/:id')
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
   @UseInterceptors(LoggerInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user details by ID (Admin only)' })
-  getUserDetails(@Param('id', ParseIntPipe) id: number) {
-    return this._user.getUserDetailsToAdmin(id);
+  getUserDetails(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    return {
+      ...this._user.getUserDetailsToAdmin(id),
+      isActive: req.isActive,
+    };
   }
 
   @Get('myData')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, ActiveUserGuard)
   @UseInterceptors(LoggerInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user data' })
-  getMyData(@current_user() user: UserType) {
-    return this._user.getUserForUser(user.id);
+  getMyData(@current_user() user: UserType, @Req() req) {
+    return {
+      ...this._user.getUserForUser(user.id),
+      isActive: req.isActive,
+    };
   }
 
   @Delete('deleteAll')
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete all users (Admin only)' })
-  deleteAll() {
-    return this._user.deleteAllUsers();
+  deleteAll(@Req() req) {
+    return {
+      ...this._user.deleteAllUsers(),
+      isActive: req.isActive,
+    };
   }
 }

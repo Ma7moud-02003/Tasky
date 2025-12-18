@@ -5,7 +5,6 @@ import { TaskController } from "./task.controller";
 import { TaskService } from "./Task.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Task } from "./Task.entity";
-// import { AdminGuard } from "src/user/user/Guards/Admin.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config/dist/config.service";
 import { UserModule } from "src/user/user/user.module";

@@ -6,6 +6,7 @@ import { current_stamp } from "src/ulites/constants";
 import { Task } from "src/Tasks/Task.entity";
 import { Comments } from "src/Comments/comment.entity";
 import {Exclude} from 'class-transformer'
+import { TaskStatusEnum } from "src/Tasks/enums/task.status.enum";
 @Entity({name:'users'})
 export class User
 {
@@ -20,6 +21,10 @@ name:string;
 password:string;
 @Column({type:'enum',enum:UserRole,default:UserRole.NORMAL_USER})
 role:string;
+
+@Column({type:'timestamp'})
+lastSeen:Date;
+
 @OneToMany(()=>Task,(task)=>task.assignedTo)
 assigendTasks:Task;
 @OneToMany(()=>Task,(task)=>task.createdby)
