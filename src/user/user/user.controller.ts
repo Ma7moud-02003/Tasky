@@ -1,12 +1,5 @@
 import { AdminGuard } from 'src/user/user/Guards/Admin.guard';
-import {
-  Delete,
-  Param,
-  ParseIntPipe,
-  Req,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Delete, Param, ParseIntPipe, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserDto } from './dtos/user.dto';
 import { UserService } from './user.service';
@@ -15,7 +8,7 @@ import { AuthGuard } from './Guards/auth.guard';
 import { current_user } from 'src/Tasks/Decorators/getUser.decorator';
 import type { UserType } from 'src/ulites/userType';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { ActiveUserGuard } from './Guards/active-user.guard';
+
 
 @ApiTags('users')
 @Controller('/api/users')
@@ -35,48 +28,41 @@ export class UserController {
   }
 
   @Get('allUsers')
-  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
+  @UseGuards(AuthGuard, AdminGuard,)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users (Admin only)' })
-  getAll(@Req() req) {
-    return {
-      users: this._user.getAllUsers_ToAdmin(),
-      isActive: req.isActive, // حالة Admin
-    };
+  getAll() {
+    return this._user.getAllUsers_ToAdmin()
+    
+  
   }
 
   @Get('userDetails/:id')
-  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
+  @UseGuards(AuthGuard, AdminGuard,)
   @UseInterceptors(LoggerInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user details by ID (Admin only)' })
-  getUserDetails(@Param('id', ParseIntPipe) id: number, @Req() req) {
-    return {
-      ...this._user.getUserDetailsToAdmin(id),
-      isActive: req.isActive,
-    };
+  getUserDetails(@Param('id', ParseIntPipe) id: number, ) {
+    return  this._user.getUserDetailsToAdmin(id)
+    
+
   }
 
   @Get('myData')
-  @UseGuards(AuthGuard, ActiveUserGuard)
+  @UseGuards(AuthGuard,)
   @UseInterceptors(LoggerInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user data' })
-  getMyData(@current_user() user: UserType, @Req() req) {
-    return {
-      ...this._user.getUserForUser(user.id),
-      isActive: req.isActive,
-    };
+  getMyData(@current_user() user: UserType, ) {
+    return this._user.getUserForUser(user.id)
+  
   }
 
   @Delete('deleteAll')
-  @UseGuards(AuthGuard, AdminGuard, ActiveUserGuard)
+  @UseGuards(AuthGuard, AdminGuard,)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete all users (Admin only)' })
-  deleteAll(@Req() req) {
-    return {
-      ...this._user.deleteAllUsers(),
-      isActive: req.isActive,
-    };
+  deleteAll() {
+    return this._user.deleteAllUsers()
   }
 }

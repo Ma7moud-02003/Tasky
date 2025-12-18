@@ -9,7 +9,6 @@ import { AuthGuard } from "src/user/user/Guards/auth.guard";
 import { UpdateTaskDto } from "./dtos/updateTask.dto";
 import { TaskStatusEnum } from "./enums/task.status.enum";
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { ActiveUserGuard } from "src/user/user/Guards/active-user.guard";
 
 
 @ApiTags('tasks')
@@ -17,60 +16,48 @@ import { ActiveUserGuard } from "src/user/user/Guards/active-user.guard";
 export class TaskController {
   constructor(private readonly _taskService: TaskService) {}
   @Post('addTask')
-  @UseGuards(AdminGuard,ActiveUserGuard)
+  @UseGuards(AdminGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Add a new task (Admin only)' })
-  addTask(@Body() body: TaskDto, @current_user() user: UserType, @Req() req) {
+  addTask(@Body() body: TaskDto, @current_user() user: UserType) {
     console.log('adding task');
-    return{
-      ...this._taskService.creatTask(body, user.id),
-      isActive:req.isActive
-}
-  }
+    return this._taskService.creatTask(body, user.id)
+  } 
 
   @Get('allTasks')
-  @UseGuards(AdminGuard,ActiveUserGuard)
+  @UseGuards(AdminGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all tasks (Admin only)' })
   getAll(@Req() req) {
-    return{
-       ...this._taskService.GetAllTasks_ToAdmin(),
-      isActive:req.isActive
-    }
+    return this._taskService.GetAllTasks_ToAdmin()
+    
   }
 
   @Get('userTasks')
-  @UseGuards(AuthGuard,ActiveUserGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get tasks of the current user' })
-  getUserTasks(@current_user() user: UserType, @Req() req) {
-    return{
-      ...this._taskService.GetUserTasks(user.id),
-      isActive:req['isActive']
-    }
+  getUserTasks(@current_user() user: UserType) {
+    return this._taskService.GetUserTasks(user.id)
+    
   }
 
   @Get('userTasks/:id')
-  @UseGuards(AdminGuard,ActiveUserGuard)
+  @UseGuards(AdminGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get tasks of a specific user (Admin only)' })
-  getUserTasks_ToAdmin(@Param('id', ParseIntPipe) id: number, @Req() req) {
-  return {   
-    ...this._taskService.GetUserTasks(id),
-    isActive:req['isActive']
-        }
+  getUserTasks_ToAdmin(@Param('id', ParseIntPipe) id: number) {
+  return this._taskService.GetUserTasks(id)
+
   }
 
   @Delete('delete/:id')
-  @UseGuards(AdminGuard,ActiveUserGuard)
+  @UseGuards(AdminGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a task by ID (Admin only)' })
   async deleteTask_ToAdmin(@Param('id', ParseIntPipe) id: number,@Req() req) {
-    return {
-      ...this._taskService.deleteTask_Admin(id),
-     isActive:req['isActive']
-     
-    }
+    return  this._taskService.deleteTask_Admin(id)
+
   }
 
   @Put('update/:id')
@@ -83,19 +70,15 @@ export class TaskController {
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard,ActiveUserGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get details of a task (User only)' })
   getDetails(@current_user() user: UserType, @Param('id', ParseIntPipe) id: number,@Req() req) {
-    return {
-      ...this._taskService.getTaskDetails(id, user),
-     isActive:req['isActive']
-
-    }
+    return this._taskService.getTaskDetails(id, user)
   }
 
   @Put('update_status/:id')
-  @UseGuards(AuthGuard,ActiveUserGuard)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update status of a task (User only)' })
   @ApiQuery({ name: 'newStatus', enum: TaskStatusEnum, required: true, description: 'New status for the task' })
@@ -103,11 +86,10 @@ export class TaskController {
     @Query('newStatus') newStatus: TaskStatusEnum,
     @Param('id', ParseIntPipe) id: number,
     @current_user() user: UserType,
-    @Req() req
+  
   ) {
     if (newStatus) return{ ...this._taskService.updateTakStatus(id, user, newStatus),
-     isActive:req['isActive']
-
+    
       
     }
     return { message: 'Data does not exist' };
