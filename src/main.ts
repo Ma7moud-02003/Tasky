@@ -24,7 +24,7 @@ app.useGlobalPipes(new ValidationPipe({whitelist:true,forbidNonWhitelisted:true}
     const document = SwaggerModule.createDocument(app, config);
   writeFileSync(join(__dirname, 'swagger.json'), JSON.stringify(document));
   SwaggerModule.setup('api', app, document);
- await app.listen(3000);
+ await app.listen(process.env.PORT||3000);
 
   }
 
