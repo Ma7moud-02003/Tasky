@@ -19,7 +19,7 @@ status:TaskStatusEnum;
 @Column()
 priority :TaskPeriority;
 @Column({type:'varchar',nullable:true})
-dueDate:Date;
+dueDate:string;
 @ManyToOne(()=>User,(user)=>user.assigendTasks)
 assignedTo:User;
 @ManyToOne(()=>User,(user)=>user.createdTasks)

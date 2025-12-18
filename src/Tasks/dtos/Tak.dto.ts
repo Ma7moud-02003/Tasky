@@ -29,7 +29,7 @@ export class TaskDto {
 
   @ApiPropertyOptional({ description: 'Task due date' })
   @IsOptional()
-  @IsDate()
+  @IsString()
   dueDate?: Date;
 
   @ApiProperty({ description: 'ID of the user assigned to the task' })
