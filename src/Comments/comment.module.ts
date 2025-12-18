@@ -7,10 +7,11 @@ import { ConfigService } from "@nestjs/config";
 import { Comments } from './comment.entity';
 import { CommentController } from './comment.controller';
 import { TaskModule } from 'src/Tasks/Task.module';
+import { User } from 'src/user/user.entity';
 
 @Module({
     imports:[  TaskModule,
-        TypeOrmModule.forFeature([Comments])
+        TypeOrmModule.forFeature([Comments,User])
         ,
           JwtModule.registerAsync({
                         inject:[ConfigService],

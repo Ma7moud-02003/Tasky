@@ -8,12 +8,13 @@ import { Task } from "./Task.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config/dist/config.service";
 import { UserModule } from "src/user/user/user.module";
+import { User } from "src/user/user.entity";
 @Module(
     {
         imports:[
             UserModule
             ,
-            TypeOrmModule.forFeature([Task]),
+            TypeOrmModule.forFeature([Task,User]),
               JwtModule.registerAsync({
                     inject:[ConfigService],
                     useFactory:(config:ConfigService)=>{

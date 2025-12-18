@@ -21,9 +21,10 @@ import { User } from '../user.entity';
         }
     })
     ],
+
   controllers: [UserController],
   providers: [UserService],
-  exports:[UserService]
+  exports:[UserService,TypeOrmModule]
 
 })
 export class UserModule {
