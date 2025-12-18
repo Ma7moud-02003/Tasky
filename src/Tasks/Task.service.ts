@@ -49,7 +49,7 @@ let addedTask= this._Repo.create({
 addedTask=await this._Repo.save(addedTask);
 return {
     message:'Task Has Been Added Successfully',
-    addedTask
+    
 }
 }
 
