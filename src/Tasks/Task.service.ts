@@ -62,7 +62,7 @@ async GetUserTasks(id:number):Promise<Task[]>
 {
 try{ 
 const tasks=await this._Repo.find({where:{assignedTo:{id:id}},order:{createdAt:"ASC"},
-select:['createdAt','title','status','id','priority']});
+select:['createdAt','title','status','id','priority','dueDate']});
 return tasks;
 }
 catch(err)
