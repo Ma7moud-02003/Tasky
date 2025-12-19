@@ -79,7 +79,7 @@ catch(err)
  */
 async GetAllTasks_ToAdmin():Promise<Task[]>
 {
-return await this._Repo.find({select:['title','status','id','priority','createdAt'],relations:['assignedTo']});
+return await this._Repo.find({select:['title','status','id','priority','createdAt','dueDate'],relations:['assignedTo']});
 }
 
 
