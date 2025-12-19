@@ -1,11 +1,4 @@
 import { UserType } from './../ulites/userType';
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-/* eslint-disable no-empty */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/await-thenable */
-/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { TaskDto } from "./dtos/Tak.dto";
 import { InjectRepository } from "@nestjs/typeorm";

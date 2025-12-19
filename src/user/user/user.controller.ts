@@ -29,11 +29,11 @@ export class UserController {
   }
 
   @Get('allUsers')
-  @UseGuards(AdminGuard,)
+  @UseGuards(AdminGuard,IsUserActive)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users (Admin only)' })
-  getAll() {
-    return this._user.getAllUsers_ToAdmin()
+  getAll(@Req() req) {
+    return {...this._user.getAllUsers_ToAdmin(), isActive:req['isActive']}
     
   
   }
