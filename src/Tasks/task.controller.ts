@@ -9,7 +9,6 @@ import { AuthGuard } from "src/user/user/Guards/auth.guard";
 import { UpdateTaskDto } from "./dtos/updateTask.dto";
 import { TaskStatusEnum } from "./enums/task.status.enum";
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { IsUserActive } from "src/user/user/Guards/is-Active.guard";
 
 
 @ApiTags('tasks')
@@ -71,16 +70,16 @@ export class TaskController {
   }
 
   @Get('/:id')
-  @UseGuards(AuthGuard,IsUserActive)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get details of a task (User only)' })
-  getDetails(@current_user() user: UserType, @Param('id', ParseIntPipe) id: number,@Req() req) {
-    return{ ...this._taskService.getTaskDetails(id, user),
-    isActive:req['isActive']}
+  getDetails(@current_user() user: UserType, @Param('id', ParseIntPipe) id: number) {
+    return  this._taskService.getTaskDetails(id, user)
+    
   }
 
   @Put('update_status/:id')
-  @UseGuards(AuthGuard,IsUserActive)
+  @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update status of a task (User only)' })
   @ApiQuery({ name: 'newStatus', enum: TaskStatusEnum, required: true, description: 'New status for the task' })
@@ -88,12 +87,10 @@ export class TaskController {
     @Query('newStatus') newStatus: TaskStatusEnum,
     @Param('id', ParseIntPipe) id: number,
     @current_user() user: UserType,
-    @Req() req
+    
   
   ) {
-    if (newStatus) return{ ...this._taskService.updateTakStatus(id, user, newStatus),
-isActive:req['isActive']
-    }
+    if (newStatus) return this._taskService.updateTakStatus(id, user, newStatus)
     return { message: 'Data does not exist' };
   }
 }

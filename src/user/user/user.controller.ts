@@ -8,7 +8,7 @@ import { AuthGuard } from './Guards/auth.guard';
 import { current_user } from 'src/Tasks/Decorators/getUser.decorator';
 import type { UserType } from 'src/ulites/userType';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { IsUserActive } from './Guards/is-Active.guard';
+
 
 
 @ApiTags('users')
@@ -29,11 +29,11 @@ export class UserController {
   }
 
   @Get('allUsers')
-  @UseGuards(AdminGuard,IsUserActive)
+  @UseGuards(AdminGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users (Admin only)' })
-  getAll(@Req() req) {
-    return {...this._user.getAllUsers_ToAdmin(), isActive:req['isActive']}
+  getAll() {
+    return this._user.getAllUsers_ToAdmin()
     
   
   }
@@ -48,16 +48,12 @@ export class UserController {
   }
 
   @Get('myData')
-  @UseGuards(AuthGuard,IsUserActive)
+  @UseGuards(AuthGuard)
   @UseInterceptors(LoggerInterceptor)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user data' })
-  getMyData(@current_user() user: UserType, @Req() req) {
-    return{
-      ...this._user.getUserForUser(user.id),
-      isActive:req['isActive']
-    }
-  
+  getMyData(@current_user() user: UserType) {
+    return this._user.getUserForUser(user.id)
   }
 
   @Delete('deleteAll')
