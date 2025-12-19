@@ -83,7 +83,7 @@ return await this._userRepo.findOne({where:{id}})
 async getAllUsers_ToAdmin()
 {
 try{
-    return await this._userRepo.find({select:['id','name','email','role','lastSeen'],order:{createdAt:'ASC'}});
+    return await this._userRepo.find({select:['id','name','email','role'],order:{createdAt:'ASC'}});
 }catch(err){
 console.log(err);
 throw new  BadRequestException(err)
